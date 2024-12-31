@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy New Year Interactive</title>
+    <style>
+        body {
+            margin: 0;
+            background: linear-gradient(120deg, #1e3c72, #2a5298);
+            color: white;
+            font-family: 'Courier New', Courier, monospace;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+        .container {
+            text-align: center;
+        }
+        .message {
+            font-size: 3rem;
+            text-shadow: 0 0 10px #fff, 0 0 20px #ff8c00, 0 0 30px #ff4500;
+            animation: glow 3s infinite;
+        }
+        .button, .option {
+            margin-top: 20px;
+            padding: 15px 30px;
+            font-size: 1.2rem;
+            color: white;
+            background: #ff4500;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+        }
+        .button:hover, .option:hover {
+            background: #ffd700;
+            color: black;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+        }
+        .options {
+            display: none;
+            margin-top: 20px;
+            animation: fadeIn 1s ease-in-out forwards;
+        }
+        #celebration {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: black;
+            color: white;
+            z-index: 100;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            animation: fadeIn 2s ease-in-out;
+        }
+        .final-button {
+            background: linear-gradient(45deg, #ff4500, #ffd700);
+            font-size: 1.5rem;
+            padding: 20px 40px;
+            animation: pulse 1.5s infinite;
+            border: 2px solid #fff;
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.8), 0 0 30px rgba(255, 69, 0, 0.8);
+        }
+        .final-button:hover {
+            background: linear-gradient(45deg, #ffd700, #ff4500);
+            color: black;
+            transform: scale(1.1);
+            box-shadow: 0 0 25px rgba(255, 215, 0, 1), 0 0 50px rgba(255, 69, 0, 1);
+        }
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 15px rgba(255, 255, 255, 0.8), 0 0 30px rgba(255, 69, 0, 0.8);
+            }
+            50% {
+                box-shadow: 0 0 25px rgba(255, 255, 255, 1), 0 0 50px rgba(255, 69, 0, 1);
+            }
+            100% {
+                box-shadow: 0 0 15px rgba(255, 255, 255, 0.8), 0 0 30px rgba(255, 69, 0, 0.8);
+            }
+        }
+        @keyframes glow {
+            0% { text-shadow: 0 0 10px #ff4500; }
+            50% { text-shadow: 0 0 20px #ffd700; }
+            100% { text-shadow: 0 0 10px #ff4500; }
+        }
+        @keyframes fadeIn {
+            0% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+        canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        .final-message {
+            z-index: 10;
+            font-size: 3rem;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="message">🎉 Happy New Year 2025! 🎉</div>
+        <button class="button" id="startButton" onclick="showLevel1()">Click to Start</button>
+
+        <!-- Level 1 -->
+        <div class="options" id="level1">
+            <button class="option" onclick="showLevel2('Success')">🎯 Success</button>
+            <button class="option" onclick="showLevel2('Happiness')">😊 Happiness</button>
+            <button class="option" onclick="showLevel2('Health')">💪 Health</button>
+        </div>
+
+        <!-- Level 2 -->
+        <div class="options" id="level2">
+            <div id="level2Message" style="margin-top: 20px; font-size: 1.5rem;"></div>
+            <button class="option" onclick="showLevel3('Professional Growth')">📈 Professional Growth</button>
+            <button class="option" onclick="showLevel3('Personal Fulfillment')">🌟 Personal Fulfillment</button>
+        </div>
+
+        <!-- Level 3 -->
+        <div class="options" id="level3">
+            <div id="level3Message" style="margin-top: 20px; font-size: 1.5rem;"></div>
+            <button class="option final-button" onclick="finalSurprise()">🚀 Click for a Surprise 🚀</button>
+        </div>
+
+        <!-- Celebration -->
+        <div id="celebration">
+            <canvas id="fireworks"></canvas>
+            <div class="final-message">🎆 Happy New Year 2025! 🎆<br>Wishing You All the Best!</div>
+        </div>
+    </div>
+
+    <script>
+        function showLevel1() {
+            document.getElementById('startButton').style.display = 'none';
+            document.getElementById('level1').style.display = 'block';
+        }
+
+        function showLevel2(choice) {
+            document.getElementById('level1').style.display = 'none';
+            document.getElementById('level2Message').textContent = `You chose ${choice}. What would you like next?`;
+            document.getElementById('level2').style.display = 'block';
+        }
+
+        function showLevel3(choice) {
+            document.getElementById('level2').style.display = 'none';
+            document.getElementById('level3Message').textContent = `Great choice: ${choice}. Ready to celebrate?`;
+            document.getElementById('level3').style.display = 'block';
+        }
+
+        function finalSurprise() {
+            const finalButton = document.querySelector('.final-button');
+            finalButton.disabled = true; // Disable button to avoid multiple clicks
+            finalButton.textContent = "Hold On... 🚀";
+            finalButton.style.animation = "none";
+
+            // Countdown before revealing the celebration
+            let countdown = 5;
+            const countdownInterval = setInterval(() => {
+                finalButton.textContent = `Launching in ${countdown}... 🚀`;
+                countdown--;
+
+                if (countdown < 0) {
+                    clearInterval(countdownInterval);
+                    startCelebration(); // Trigger the fireworks celebration
+                }
+            }, 1000);
+        }
+
+        function startCelebration() {
+            document.body.style.overflow = 'hidden';
+            document.getElementById('celebration').style.display = 'flex';
+            launchFireworks();
+        }
+
+        function launchFireworks() {
+            const canvas = document.getElementById('fireworks');
+            const ctx = canvas.getContext('2d');
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+
+            const particles = [];
+            const colors = ['#FF5733', '#FFC300', '#DAF7A6', '#C70039', '#900C3F', '#581845'];
+
+            function createFirework(x, y) {
+                for (let i = 0; i < 100; i++) {
+                    particles.push({
+                        x,
+                        y,
+                        dx: Math.random() * 6 - 3,
+                        dy: Math.random() * 6 - 3,
+                        color: colors[Math.floor(Math.random() * colors.length)],
+                        life: Math.random() * 50 + 50,
+                    });
+                }
+            }
+
+            function updateFireworks() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                for (let i = particles.length - 1; i >= 0; i--) {
+                    const p = particles[i];
+                    p.x += p.dx;
+                    p.y += p.dy;
+                    p.life -= 1;
+
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, 3, 0, Math.PI * 2);
+                    ctx.fillStyle = p.color;
+                    ctx.fill();
+
+                    if (p.life <= 0) particles.splice(i, 1);
+                }
+                requestAnimationFrame(updateFireworks);
+            }
+
+            setInterval(() => createFirework(Math.random() * canvas.width, Math.random() * canvas.height), 500);
+            updateFireworks();
+        }
+    </script>
+</body>
+</html>
